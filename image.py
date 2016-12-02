@@ -27,7 +27,7 @@ class Image(object):
     def __init__(self, fmt, path):
         self.path = os.path.join("image_set", fmt, str(path))
         self.fmt = fmt
-        self.array = misc.imread(self.path)
+        self.array = misc.imread(self.path).astype(np.float32)
         self.shape = self.array.shape
     
     @property
@@ -94,3 +94,8 @@ class Image(object):
         blue_exp = np.exp(-(blue_canal - 0.5) ** 2 / (2 * sigma ** 2))
         return red_exp*green_exp*blue_exp
 
+eagle = Image('', 'eagle.jpg')
+
+exposed = eagle.get_well_exposedness_image()
+
+show_gray(exposed)
