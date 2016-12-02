@@ -41,6 +41,7 @@ class Image(object):
         return self._grayScale
 
     def get_saturation_image(self):
+        """Function to get the Saturation map"""
         red_canal = self.array[:, :, 0]
         green_canal = self.array[:, :, 1]
         blue_canal = self.array[:, :, 2]
@@ -82,4 +83,14 @@ class Image(object):
                 sobel_v[row][col] = np.abs((kernel2* grey_extended[row:(row+3),col:(col+3)]).sum())
         return sobel_h,sobel_v       
         
+    def get_well_exposedness_image(self):
+        """Function to get the Well-Exposedness map"""
+        red_canal = self.array[:, :, 0]/255
+        green_canal = self.array[:, :, 1]/255
+        blue_canal = self.array[:, :, 2]/255
+        sigma = 0.2
+        red_exp = np.exp(-(red_canal - 0.5)**2/(2*sigma**2))
+        green_exp = np.exp(-(green_canal - 0.5) ** 2 / (2 * sigma ** 2))
+        blue_exp = np.exp(-(blue_canal - 0.5) ** 2 / (2 * sigma ** 2))
+        return red_exp*green_exp*blue_exp
 
