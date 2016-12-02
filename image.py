@@ -29,7 +29,7 @@ class Image(object):
         self.fmt = fmt
         self.array = misc.imread(self.path)
         self.shape = self.array.shape
-
+    
     @property
     def grayScale(self):
         """Grayscale image"""
@@ -47,11 +47,26 @@ class Image(object):
         mean = (red_canal + green_canal + blue_canal) / 3
         saturation = np.sqrt(((red_canal - mean)**2 + (green_canal - mean)**2 + (blue_canal - mean)**2)/3)
         return saturation
+    
+        
+    def contrast(self):
+        """Function that return the Constrast numpy array"""
+        grey = self.grayScale
+        contrast = np.zeros((self.shape[0], self.shape[1]))
+        grey_extended = np.zeros((self.shape[0]+2, self.shape[1]+2))
+        grey_extended[1:self.shape[0]+1,1:self.shape[1]+1]=grey
+        kernel = np.array([[ -1,-1, -1 ],
+                           [ -1, 8, -1 ],
+                            [ -1, -1, -1 ]])
+        for row in range(self.shape[0]):
+            for col in range(self.shape[1]):
+                contrast[row][col] = (kernel* grey_extended[row:(row+3),col:(col+3)]).sum()
+        return contrast
+        
+        
+        
+l = Image('jpeg','flower.jpeg')
+contrast = l.contrast()
 
-
-eagle = Image('', 'eagle.jpg')
-
-sat = eagle.get_saturation_image()
-
-show_gray(sat)
+show_gray(contrast)
 
