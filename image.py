@@ -60,13 +60,26 @@ class Image(object):
                             [ -1, -1, -1 ]])
         for row in range(self.shape[0]):
             for col in range(self.shape[1]):
-                contrast[row][col] = (kernel* grey_extended[row:(row+3),col:(col+3)]).sum()
+                contrast[row][col] = np.abs((kernel* grey_extended[row:(row+3),col:(col+3)]).sum())
         return contrast
         
+    def sobel(self):
+        """Function that return the Constrast numpy array"""
+        grey = self.grayScale
+        sobel_h = np.zeros((self.shape[0], self.shape[1]))
+        sobel_v = np.zeros((self.shape[0], self.shape[1]))
+        grey_extended = np.zeros((self.shape[0]+2, self.shape[1]+2))
+        grey_extended[1:self.shape[0]+1,1:self.shape[1]+1]=grey
+        kernel1 = np.array([[ -1,-2, -1 ],
+                           [ 0, 0, 0 ],
+                            [ 1, 2, 1 ]])
+        kernel2 = np.array([[ -1,0, 1 ],
+                           [ -2, 0, 2 ],
+                            [ -1, 0, -1 ]])
+        for row in range(self.shape[0]):
+            for col in range(self.shape[1]):
+                sobel_h[row][col] = np.abs((kernel1* grey_extended[row:(row+3),col:(col+3)]).sum())
+                sobel_v[row][col] = np.abs((kernel2* grey_extended[row:(row+3),col:(col+3)]).sum())
+        return sobel_h,sobel_v       
         
-        
-l = Image('jpeg','flower.jpeg')
-contrast = l.contrast()
-
-show_gray(contrast)
 
