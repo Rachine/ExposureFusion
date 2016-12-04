@@ -38,7 +38,7 @@ class WeightsMap(object):
             self.weights.append(weight)
             sums = sums + weight
         for index in range(self.num_images):
-            self.weights[index] =  div0(self.weights[index],sums)
+            self.weights[index] = div0(self.weights[index],sums)
         return self.weights   
     
     def result_exposure(self):

@@ -30,10 +30,11 @@ class Image(object):
     def __init__(self, fmt, path):
         self.path = os.path.join("image_set", fmt, str(path))
         self.fmt = fmt
-        self.array = misc.imread(self.path).astype(np.float32)
-        self.array = misc.imresize(self.array,0.2)
+        self.array = misc.imread(self.path)
+        self.array = misc.imresize(self.array, 0.2)
+        self.array = self.array.astype(np.float32) / 255
         self.shape = self.array.shape
-    
+
     @property
     def grayScale(self):
         """Grayscale image"""
@@ -88,9 +89,9 @@ class Image(object):
         
     def exposedness(self):
         """Function to get the Well-Exposedness map"""
-        red_canal = self.array[:, :, 0]/255
-        green_canal = self.array[:, :, 1]/255
-        blue_canal = self.array[:, :, 2]/255
+        red_canal = self.array[:, :, 0]
+        green_canal = self.array[:, :, 1]
+        blue_canal = self.array[:, :, 2]
         sigma = 0.2
         red_exp = exponential_euclidean(red_canal, sigma)
         green_exp = exponential_euclidean(green_canal, sigma)
