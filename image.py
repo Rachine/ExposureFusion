@@ -31,7 +31,7 @@ class Image(object):
         self.path = os.path.join("image_set", fmt, str(path))
         self.fmt = fmt
         self.array = misc.imread(self.path)
-        self.array = misc.imresize(self.array, 0.2)
+#        self.array = misc.imresize(self.array, 0.2)
         self.array = self.array.astype(np.float32) / 255
         self.shape = self.array.shape
 
