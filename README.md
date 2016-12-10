@@ -1,4 +1,4 @@
-# ExposureFusion
+# Exposure Fusion
 Exposure Fusion Technique
 This code implements the Exposure Fusion, a Low-Dynamic-Range technique. It blends multi-exposure sequence of photo into a high-quality image, and is guided by measurement as Contrast, Saturation and Well-exposedness.
 
@@ -15,11 +15,11 @@ Here the first result with the Naive implemtation:
 <img src="/result_jpeg_naive.png" width="500">
 
 ### Authors
- - Chaima Kadhaoui
+ - Chaïmaa Kadaoui 
  - [Rachid Riad](https://rachine.github.io/)
 
 
-# References
+### References
 [1]: Exposure Fusion: A Simple and Practical Alternative to High Dynamic Range Photography
 Mertens, T.; Kautz, J.; Van Reeth, F.
 
