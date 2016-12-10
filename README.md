@@ -14,7 +14,15 @@ Here the first result with the Naive implemtation:
 
 <img src="/result_jpeg_naive.png" width="500">
 
+### Authors
+ - Chaima Kadhaoui
+ - [Rachid Riad](https://rachine.github.io/)
+
 
 # References
 [1]: Exposure Fusion: A Simple and Practical Alternative to High Dynamic Range Photography
 Mertens, T.; Kautz, J.; Van Reeth, F.
+
+[2]: P. Burt and T. Adelson. The Laplacian Pyramid as a Com-
+pact Image Code. IEEE Transactions on Communication,
+COM-31:532–540, 1983.

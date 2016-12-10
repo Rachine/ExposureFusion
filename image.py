@@ -46,7 +46,7 @@ class Image(object):
         return self._grayScale
 
     def saturation(self):
-        """Function to get the Saturation map"""
+        """Function that returns the Saturation map"""
         red_canal = self.array[:, :, 0]
         green_canal = self.array[:, :, 1]
         blue_canal = self.array[:, :, 2]
@@ -55,7 +55,7 @@ class Image(object):
         return saturation
 
     def contrast(self):
-        """Function that return the Constrast numpy array"""
+        """Function that returns the Constrast numpy array"""
         grey = self.grayScale
         contrast = np.zeros((self.shape[0], self.shape[1]))
         grey_extended = np.zeros((self.shape[0]+2, self.shape[1]+2))
@@ -69,7 +69,7 @@ class Image(object):
         return contrast
         
     def sobel(self):
-        """Function that return the Constrast numpy array"""
+        """Function that returns the Constrast numpy array"""
         grey = self.grayScale
         sobel_h = np.zeros((self.shape[0], self.shape[1]))
         sobel_v = np.zeros((self.shape[0], self.shape[1]))
@@ -88,7 +88,7 @@ class Image(object):
         return sobel_h, sobel_v
         
     def exposedness(self):
-        """Function to get the Well-Exposedness map"""
+        """Function that returns the Well-Exposedness map"""
         red_canal = self.array[:, :, 0]
         green_canal = self.array[:, :, 1]
         blue_canal = self.array[:, :, 2]
@@ -97,3 +97,7 @@ class Image(object):
         green_exp = exponential_euclidean(green_canal, sigma)
         blue_exp = exponential_euclidean(blue_canal, sigma)
         return red_exp*green_exp*blue_exp
+
+    def laplacian(self):
+        """Function that returns the Laplacian Pyramid"""
+        
