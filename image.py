@@ -98,6 +98,5 @@ class Image(object):
         blue_exp = exponential_euclidean(blue_canal, sigma)
         return red_exp*green_exp*blue_exp
 
-    def laplacian(self):
-        """Function that returns the Laplacian Pyramid"""
+
         

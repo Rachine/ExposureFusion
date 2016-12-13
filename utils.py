@@ -26,24 +26,32 @@ def kernel(m, n, a=0.6):
     """Returns the value of the kernel at position w and n"""
     return kernel_1D(m,a)*kernel_1D(n, a)
 
-def Reduce(image, a = 0.6):
+def Reduce(image, n, a = 0.6):
     """Reduce function for Pyramids"""
-    [R,C] = [image.shape[0],image.shape[1]]
-    image_extended = np.zeros((R+4, C+4))
-    image_extended[2:R+2,2:C+2]=image
     try:
-        image_reduced = np.zeros((R/2,C/2))
+        if n == 0:
+            return image
+        else:
+            image = Reduce(image, n-1,a)
+            [R,C] = [image.shape[0],image.shape[1]]
+            image_extended = np.zeros((R+4, C+4))
+            image_extended[2:R+2,2:C+2]=image
+            try:
+                image_reduced = np.zeros((R/2,C/2))
+            except Exception as e:
+                print "Dimension Error"
+                print e
+            
+            for i in range(R/2):
+                for j in range(C/2):
+                    for m in range(-2,3):
+                        for n in range(-2,3):
+                            image_reduced[i,j] += kernel(m,n)*image_extended[2*i+m+2,2*j+n+2]
+            return image_reduced
     except Exception as e:
         print "Dimension Error"
         print e
-    
-    for i in range(R/2):
-        for j in range(C/2):
-            for m in range(-2,3):
-                for n in range(-2,3):
-                    image_reduced[i,j] += kernel(m,n)*image_extended[2*i+m+2,2*j+n+2]
-    return image_reduced
-    
+
 
 def weighted_sum(image, i, j, a):
     weighted_sum = 0
