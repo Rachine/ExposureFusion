@@ -39,6 +39,7 @@ class WeightsMap(object):
         return self.weights   
     
     def result_exposure(self):
+        "Return the Exposure Fusion image with Naive method"
         self.get_weights_map()
         self.result_image = np.zeros(self.shape)
         for canal in range(3):
