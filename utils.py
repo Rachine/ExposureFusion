@@ -6,10 +6,8 @@ Created on Sat Dec 10 16:32:39 2016
 """
 import pdb
 
-import os.path
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy import ndimage, misc
+import scipy.signal as sig
 
 def kernel_1D(n, a=0.6):
     """Kernel function in 1 dimension"""
@@ -22,11 +20,18 @@ def kernel_1D(n, a=0.6):
     else:
         return 0
 
-def kernel(m, n, a=0.6):
+def kernel_old(m, n, a=0.6):
     """Returns the value of the kernel at position w and n"""
     return kernel_1D(m,a)*kernel_1D(n, a)
 
-def Reduce(image, n, a = 0.6):
+def get_kernel(a=0.6):
+    kernel = np.zeros((5,5))
+    for i in range(5):
+        for j in range(5):
+            kernel[i,j] = kernel_1D(i-2, a)*kernel_1D(j-2, a)
+    return kernel
+
+def Reduce_old(image, n, a = 0.6):
     """Reduce function for Pyramids"""
     try:
         if n == 0:
@@ -46,7 +51,7 @@ def Reduce(image, n, a = 0.6):
                 for j in range(C/2):
                     for m in range(-2,3):
                         for n in range(-2,3):
-                            image_reduced[i,j] += kernel(m,n)*image_extended[2*i+m+2,2*j+n+2]
+                            image_reduced[i,j] += kernel_old(m, n) * image_extended[2 * i + m + 2, 2 * j + n + 2]
             return image_reduced
     except Exception as e:
         print "Dimension Error"
@@ -60,11 +65,11 @@ def weighted_sum(image, i, j, a):
             pixel_i = float(i - m) / 2
             pixel_j = float(j - n) / 2
             if pixel_i.is_integer() and pixel_j.is_integer():
-                weighted_sum += kernel(m, n, a) * image[pixel_i, pixel_j]
+                weighted_sum += kernel_old(m, n, a) * image[pixel_i, pixel_j]
     return 4 * weighted_sum
 
 
-def Expand(image, n, a=0.6):
+def Expand_old(image, n, a=0.6):
     """Expand function for Pyramids"""
     try:
         if n == 0:
@@ -85,9 +90,53 @@ def Expand(image, n, a=0.6):
         print "Dimension error"
         print e
         
-        
-        
-        
-        
-        
-        
+def Reduce1(image, a=0.6):
+    kernel = get_kernel(a)
+    shape = image.shape
+    if len(shape) == 3:
+        image_reduced = np.zeros((shape[0]/2, shape[1]/2, 3))
+        for i in range(3):
+            canal_reduced = sig.convolve2d(image[:,:,i], kernel, 'same')
+            image_reduced[:,:,i] = canal_reduced[::2, ::2]
+    else:
+        image_reduced = sig.convolve2d(image, kernel, 'same')[::2, ::2]
+    return image_reduced
+
+def Reduce(image, n, a = 0.6):
+    """Reduce function for Pyramids"""
+    try:
+        if n == 0:
+            return image
+        else:
+            image = Reduce(image, n-1,a)
+            return Reduce1(image, a)
+    except Exception as e:
+        print "Dimension Error"
+        print e
+
+def Expand1(image, a=0.6):
+    kernel = get_kernel(a)
+    shape = image.shape
+    if len(shape) == 3:
+        image_to_expand = np.zeros((2*shape[0], 2*shape[1], 3))
+        image_expanded = np.zeros(image_to_expand.shape)
+        for i in range(3):
+            image_to_expand[::2, ::2, i] = image[:,:,i]
+            image_expanded[:,:,i] = sig.convolve2d(image_to_expand[:,:,i], 4*kernel, 'same')
+    else:
+        image_to_expand = np.zeros((2 * shape[0], 2 * shape[1]))
+        image_to_expand[::2, ::2] = image
+        image_expanded = sig.convolve2d(image_to_expand[:,:], 4*kernel, 'same')
+    return image_expanded
+
+def Expand(image, n, a=0.6):
+    """Expand function for Pyramids"""
+    try:
+        if n == 0:
+            return image
+        else:
+            image = Expand(image, n-1, a)
+            return Expand1(image, a)
+    except Exception as e:
+        print "Dimension error"
+        print e

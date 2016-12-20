@@ -38,11 +38,8 @@ class Image(object):
     @property
     def grayScale(self):
         """Grayscale image"""
-        grey = np.zeros((self.shape[0], self.shape[1]))
-        for row in range(len(self.array)):
-            for col in range(len(self.array[row])):
-                grey[row][col] = weightedAverage(self.array[row][col])
-        self._grayScale = grey
+        rgb = self.array
+        self._grayScale = np.dot(rgb[...,:3], [0.299, 0.587, 0.114])
         return self._grayScale
 
     def saturation(self):
@@ -98,5 +95,5 @@ class Image(object):
         blue_exp = exponential_euclidean(blue_canal, sigma)
         return red_exp*green_exp*blue_exp
 
-
-        
+if __name__ == "__main__":
+    im = Image("jpeg","t_0_1")

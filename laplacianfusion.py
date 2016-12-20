@@ -31,7 +31,7 @@ class LaplacianMap(object):
         self.num_images = len(self.images)
         self.height_pyr = n
         
-    def get_weights_map(self, w_c = 1, w_s = 1, w_e = 1):
+    def get_weights_map(self, w_c = 0, w_s = 0, w_e = 0):
         """Return the normalized Weight map"""
         self.weights = []
         sums = np.zeros((self.shape[0], self.shape[1]))
@@ -73,21 +73,26 @@ class LaplacianMap(object):
         """Return all the Laplacian pyramid for all images"""
         self.laplacian_pyramid = []
         for index in range(self.num_images):
-            self.laplacian_pyramid.append(self.get_laplacian_pyramid(self.images[index].grayScale,self.height_pyr))
+            self.laplacian_pyramid.append(self.get_laplacian_pyramid(self.images[index].array,self.height_pyr))
         return self.laplacian_pyramid
     
     def result_exposure(self):
         "Return the Exposure Fusion image with Laplacian/Gaussian Fusion method"
-        # self.get_weights_map()
-        # self.get_gaussian_pyramid_weights()
-        # self.get_laplacian_pyramid_images()
+        print "weights"
+        self.get_weights_map()
+        print "gaussian pyramid"
+        self.get_gaussian_pyramid_weights()
+        print "laplacian pyramid"
+        self.get_laplacian_pyramid_images()
         result_pyramid = []
         for floor in range(self.height_pyr):
             print 'floor ', floor
             result_floor = np.zeros(self.laplacian_pyramid[0][floor].shape)
             for index in range(self.num_images):
                 print 'image ', index
-                result_floor += self.laplacian_pyramid[index][floor]*self.weights_pyramid[index][floor]
+                for i in range(3):
+                    result_floor[:,:,i] += self.laplacian_pyramid[index][floor][:,:,i]*self.weights_pyramid[index][floor]
+                # result_floor += self.laplacian_pyramid[index][floor] * self.weights_pyramid[index][floor]
             result_pyramid.append(result_floor)
         # Get the image from the Laplacian pyramid
         self.result_image = result_pyramid[-1]

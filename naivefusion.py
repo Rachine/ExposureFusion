@@ -46,10 +46,11 @@ class WeightsMap(object):
             for index in range(self.num_images):
                 self.result_image[:,:,canal] += self.weights[index] * self.images[index].array[:,:,canal]
         return self.result_image
-        
-names = [line.rstrip('\n') for line in open('list_jpeg.txt')]
 
-W = WeightsMap("jpeg",names)
+if __name__ == "__main__":
+    names = [line.rstrip('\n') for line in open('list_jpeg.txt')]
 
-im = W.result_exposure()
-image.show(im)
+    W = WeightsMap("jpeg",names)
+
+    im = W.result_exposure()
+    image.show(im)
