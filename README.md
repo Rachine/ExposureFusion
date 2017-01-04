@@ -10,12 +10,18 @@ Here some multi-exposure sequence of photo used:
 
 <img src="/image_set/jpeg/t_0_1" width="240"> <img src="/image_set/jpeg/t_5_1" width="240"> <img src="/image_set/jpeg/t_9_1" width="240">
 
-Here the first result with the Naive implemtation:
+Here the result with the Naive implemtation:
 
 <img src="/result_jpeg_naive.png" width="500">
 
+
+Here the result with the Exposure Fusion algorithm with the Laplacian Pyramid:
+
+<img src="/result_jpeg_exposure.png" width="500">
+
+
 ### Authors
- - Chaïmaa Kadaoui 
+ - Chaïmaa Kadaoui
  - [Rachid Riad](https://rachine.github.io/)
 
 

@@ -20,10 +20,11 @@ def show(color_array):
 
 def show_gray(gray_array):
     """ Function to show grayscale image"""
+    fig = plt.figure()
     plt.imshow(gray_array, cmap=plt.cm.Greys_r)
     plt.show()
     plt.axis('off')
-
+    
 class Image(object):
     """Class for Image"""
 
