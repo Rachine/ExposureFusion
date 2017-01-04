@@ -31,7 +31,7 @@ class LaplacianMap(object):
         self.num_images = len(self.images)
         self.height_pyr = n
         
-    def get_weights_map(self, w_c = 0, w_s = 0, w_e = 0):
+    def get_weights_map(self, w_c = 1, w_s = 1, w_e = 1):
         """Return the normalized Weight map"""
         self.weights = []
         sums = np.zeros((self.shape[0], self.shape[1]))
@@ -79,7 +79,7 @@ class LaplacianMap(object):
     def result_exposure(self):
         "Return the Exposure Fusion image with Laplacian/Gaussian Fusion method"
         print "weights"
-        self.get_weights_map()
+        self.get_weights_map(1,1,1)
         print "gaussian pyramid"
         self.get_gaussian_pyramid_weights()
         print "laplacian pyramid"
@@ -104,7 +104,7 @@ class LaplacianMap(object):
 
     
 if __name__ == "__main__":
-    names = [line.rstrip('\n') for line in open('list_jpeg_test.txt')]
+    names = [line.rstrip('\n') for line in open('list_jpeg.txt')]
     lap = LaplacianMap('jpeg',names)
     res = lap.result_exposure()
     image.show_gray(res)
