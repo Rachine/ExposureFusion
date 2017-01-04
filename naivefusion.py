@@ -48,9 +48,9 @@ class WeightsMap(object):
         return self.result_image
 
 if __name__ == "__main__":
-    names = [line.rstrip('\n') for line in open('list_jpeg.txt')]
+    names = [line.rstrip('\n') for line in open('list_jpeg_test.txt')]
 
-    W = WeightsMap("jpeg",names)
+    W = WeightsMap("jpeg", names)
 
     im = W.result_exposure()
     image.show(im)

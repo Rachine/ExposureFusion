@@ -100,7 +100,6 @@ class LaplacianMap(object):
             print 'floor ', floor
             self.result_image = result_pyramid[floor] + utils.Expand(self.result_image,1)
         return self.result_image
-    
 
     
 if __name__ == "__main__":

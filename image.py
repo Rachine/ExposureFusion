@@ -48,7 +48,7 @@ class Image(object):
         red_canal = self.array[:, :, 0]
         green_canal = self.array[:, :, 1]
         blue_canal = self.array[:, :, 2]
-        mean = (red_canal + green_canal + blue_canal) / 3
+        mean = red_canal + green_canal + blue_canal / 3.0
         saturation = np.sqrt(((red_canal - mean)**2 + (green_canal - mean)**2 + (blue_canal - mean)**2)/3)
         return saturation
 
@@ -98,3 +98,5 @@ class Image(object):
 
 if __name__ == "__main__":
     im = Image("jpeg","t_0_1")
+    sat = im.exposedness()
+    show_gray(sat)
