@@ -100,11 +100,10 @@ class LaplacianMap(object):
             print 'floor ', floor
             self.result_image = result_pyramid[floor] + utils.Expand(self.result_image,1)
         return self.result_image
-    
 
     
 if __name__ == "__main__":
-    names = [line.rstrip('\n') for line in open('list_jpeg_test.txt')]
+    names = [line.rstrip('\n') for line in open('list_jpeg.txt')]
     lap = LaplacianMap('jpeg',names)
     res = lap.result_exposure()
     image.show_gray(res)
