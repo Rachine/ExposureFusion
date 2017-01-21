@@ -11,14 +11,16 @@ import scipy.signal as sig
 
 def kernel_1D(n, a=0.6):
     """Kernel function in 1 dimension"""
-    if n == 0:
-        return a
-    elif n == -1 or n == 1:
-        return 1./4
-    elif n == -2 or n == 2:
-        return 1./4 - float(a)/2
-    else:
-        return 0
+    kernel = [.0625, .25, .375, .25, .0625]
+#    if n == 0:
+#        return a
+#    elif n == -1 or n == 1:
+#        return 1./4
+#    elif n == -2 or n == 2:
+#        return 1./4 - float(a)/2
+#    else:
+#        return 0
+    return kernel[n]
 
 def kernel_old(m, n, a=0.6):
     """Returns the value of the kernel at position w and n"""
@@ -28,7 +30,7 @@ def get_kernel(a=0.6):
     kernel = np.zeros((5,5))
     for i in range(5):
         for j in range(5):
-            kernel[i,j] = kernel_1D(i-2, a)*kernel_1D(j-2, a)
+            kernel[i,j] = kernel_1D(i, a)*kernel_1D(j, a)
     return kernel
 
 def Reduce_old(image, n, a = 0.6):

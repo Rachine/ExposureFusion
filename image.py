@@ -56,16 +56,16 @@ class Image(object):
     def contrast(self):
         """Function that returns the Constrast numpy array"""
         grey = self.grayScale
-        grey = ndimage.gaussian_filter(grey, sigma=(7, 7), order=0)
+        grey = ndimage.gaussian_filter(grey, sigma=(5, 5), order=0)
         contrast = np.zeros((self.shape[0], self.shape[1]))
         grey_extended = np.zeros((self.shape[0]+2, self.shape[1]+2))
         grey_extended[1:self.shape[0]+1,1:self.shape[1]+1]=grey
-        kernel = np.array([[ -1,-1, -1 ],
-                           [ -1, 8, -1 ],
-                            [ -1, -1, -1 ]])
-#        kernel = np.array([[ 0,1, 0 ],
-#                           [ 1, -4, 1 ],
-#                            [ 0, 1, 0 ]])
+#        kernel = np.array([[ -1,-1, -1 ],
+#                           [ -1, 8, -1 ],
+#                            [ -1, -1, -1 ]])
+        kernel = np.array([[ 0,1, 0 ],
+                           [ 1, -4, 1 ],
+                            [ 0, 1, 0 ]])
         for row in range(self.shape[0]):
             for col in range(self.shape[1]):
                 contrast[row][col] = np.abs((kernel* grey_extended[row:(row+3),col:(col+3)]).sum())
@@ -102,6 +102,6 @@ class Image(object):
         return red_exp*green_exp*blue_exp
 
 if __name__ == "__main__":
-    im = Image("jpeg","arno2.jpg")
-    sat = im.saturation()
+    im = Image("jpeg","grandcanal_mean.jpg")
+    sat = im.exposedness()
     show_gray(sat)

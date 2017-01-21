@@ -11,13 +11,13 @@ from scipy import ndimage, misc
 import image
 import utils 
 import pdb
-
-def div0( a, b ):
-    """ ignore / 0, div0( [-1, 0, 1], 0 ) -> [0, 0, 0] """
-    with np.errstate(divide='ignore', invalid='ignore'):
-        c = np.true_divide( a, b )
-        c[ ~ np.isfinite( c )] = 0 
-        return c
+#
+#def div0( a, b ):
+#    """ ignore / 0, div0( [-1, 0, 1], 0 ) -> [0, 0, 0] """
+#    with np.errstate(divide='ignore', invalid='ignore'):
+#        c = np.true_divide( a, b )
+#        c[ ~ np.isfinite( c )] = 0 
+#        return c
 
 class LaplacianMap(object):
     """Class for weights attribution with Laplacian Fusion"""
@@ -39,11 +39,11 @@ class LaplacianMap(object):
             contrast = image_name.contrast()
             saturation = image_name.saturation()
             exposedness = image_name.exposedness()
-            weight = (contrast**w_c)*(saturation**w_s)*(exposedness**w_e)
+            weight = (contrast**w_c)*(saturation**w_s)*(exposedness**w_e) + 1e-12
             self.weights.append(weight)
             sums = sums + weight
         for index in range(self.num_images):
-            self.weights[index] = div0(self.weights[index],sums)
+            self.weights[index] = self.weights[index]/sums
         return self.weights
 
     def get_gaussian_pyramid(self,image, n=3):
@@ -90,8 +90,8 @@ class LaplacianMap(object):
             result_floor = np.zeros(self.laplacian_pyramid[0][floor].shape)
             for index in range(self.num_images):
                 print 'image ', index
-                for i in range(3):
-                    result_floor[:,:,i] += self.laplacian_pyramid[index][floor][:,:,i]*self.weights_pyramid[index][floor]
+                for canal in range(3):
+                    result_floor[:,:,canal] += self.laplacian_pyramid[index][floor][:,:,canal]*self.weights_pyramid[index][floor]
                 # result_floor += self.laplacian_pyramid[index][floor] * self.weights_pyramid[index][floor]
             result_pyramid.append(result_floor)
         # Get the image from the Laplacian pyramid
@@ -103,7 +103,9 @@ class LaplacianMap(object):
 
     
 if __name__ == "__main__":
-    names = [line.rstrip('\n') for line in open('list_jpeg.txt')]
-    lap = LaplacianMap('jpeg',names)
+    names = [line.rstrip('\n') for line in open('list_jpeg_arno.txt')]
+    lap = LaplacianMap('jpeg',names,n=5)
     res = lap.result_exposure()
-    image.show_gray(res)
+    image.show(res)
+    import scipy.misc
+#    scipy.misc.toimage(res, cmin=0.0, cmax=1).save('result_jpeg_exposure_grandcanal.png')

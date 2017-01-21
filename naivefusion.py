@@ -5,12 +5,12 @@ import matplotlib.pyplot as plt
 from scipy import ndimage, misc
 import image
 
-def div0( a, b ):
-    """ ignore / 0, div0( [-1, 0, 1], 0 ) -> [0, 0, 0] """
-    with np.errstate(divide='ignore', invalid='ignore'):
-        c = np.true_divide( a, b )
-        c[ ~ np.isfinite( c )] = 0 
-        return c
+#def div0( a, b ):
+#    """ ignore / 0, div0( [-1, 0, 1], 0 ) -> [0, 0, 0] """
+#    with np.errstate(divide='ignore', invalid='ignore'):
+#        c = np.true_divide( a, b )
+#        c[ ~ np.isfinite( c )] = 0 
+#        return c
         
 class WeightsMap(object):
     """Class for weights attribution for all images"""
@@ -31,16 +31,16 @@ class WeightsMap(object):
             contrast = image_name.contrast()
             saturation = image_name.saturation()
             exposedness = image_name.exposedness()
-            weight = (contrast**w_c)*(saturation**w_s)*(exposedness**w_e)
+            weight = (contrast**w_c)*(saturation**w_s)*(exposedness**w_e) + 1e-12
             self.weights.append(weight)
             sums = sums + weight
         for index in range(self.num_images):
-            self.weights[index] = div0(self.weights[index],sums)
+            self.weights[index] = self.weights[index]/sums
         return self.weights   
     
     def result_exposure(self):
         "Return the Exposure Fusion image with Naive method"
-        self.get_weights_map()
+        self.get_weights_map(1,1,1)
         self.result_image = np.zeros(self.shape)
         for canal in range(3):
             for index in range(self.num_images):
@@ -48,9 +48,11 @@ class WeightsMap(object):
         return self.result_image
 
 if __name__ == "__main__":
-    names = [line.rstrip('\n') for line in open('list_jpeg_test.txt')]
+    names = [line.rstrip('\n') for line in open('list_jpeg_arno.txt')]
 
     W = WeightsMap("jpeg", names)
 
     im = W.result_exposure()
     image.show(im)
+    import scipy.misc
+#    scipy.misc.toimage(im, cmin=0.0, cmax=1).save('result_jpeg_naive_grandcanal.png')
