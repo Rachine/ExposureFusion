@@ -99,11 +99,13 @@ class LaplacianMap(object):
         for floor in range(self.height_pyr -2, -1, -1):
             print 'floor ', floor
             self.result_image = result_pyramid[floor] + utils.Expand(self.result_image,1)
+        self.result_image[self.result_image<0] = 0
+        self.result_image[self.result_image>1] = 1
         return self.result_image
 
     
 if __name__ == "__main__":
-    names = [line.rstrip('\n') for line in open('list_jpeg_arno.txt')]
+    names = [line.rstrip('\n') for line in open('list_jpeg_mask.txt')]
     lap = LaplacianMap('jpeg',names,n=5)
     res = lap.result_exposure()
     image.show(res)
