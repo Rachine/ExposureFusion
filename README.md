@@ -8,17 +8,16 @@ This code used OpenCV 3 and python 2.7 and the installation is based on this [Tu
 
 Here some multi-exposure sequence of photo used:
 
-<img src="/image_set/jpeg/t_0_1" width="240"> <img src="/image_set/jpeg/t_5_1" width="240"> <img src="/image_set/jpeg/t_9_1" width="240">
+<img src="/image_set/mask/mask_under.jpg" width="230"> <img src="/image_set/mask/mask_mean.jpg" width="230"> <img src="/image_set/mask/mask_over.jpg" width="230">
 
 Here the result with the Naive implemtation:
 
-<img src="/result_jpeg_naive.png" width="500">
+<img src="/result_jpeg_naive_mask.png" width="500">
 
 
 Here the result with the Exposure Fusion algorithm with the Laplacian Pyramid:
 
-<img src="/result_jpeg_exposure.png" width="500">
-
+<img src="/result_jpeg_exposure_mask.jpg" width="500">
 
 ### Authors
  - Chaïmaa Kadaoui

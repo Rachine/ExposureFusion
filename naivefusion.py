@@ -32,6 +32,7 @@ class WeightsMap(object):
             saturation = image_name.saturation()
             exposedness = image_name.exposedness()
             weight = (contrast**w_c)*(saturation**w_s)*(exposedness**w_e) + 1e-12
+#            weight = ndimage.gaussian_filter(weight, sigma=(3, 3), order=0)
             self.weights.append(weight)
             sums = sums + weight
         for index in range(self.num_images):
