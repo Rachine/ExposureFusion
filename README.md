@@ -12,11 +12,15 @@ Here some multi-exposure sequence of photo used:
 
 Here the result with the Naive implementation:
 
-<img src="res/lap_mask_6.jpg" width="500">
+<img src="/image_set/mask/mask_under.jpg" width="230"> <img src="/image_set/mask/mask_mean.jpg" width="230"> <img src="/image_set/mask/mask_over.jpg" width="230">
+
+Here the result with the Naive implementation:
+
+<img src="res/mask_naive.jpg" width="500">
 
 Here the result with the Exposure Fusion algorithm with the Laplacian Pyramid:
 
-<img src="res/mask_naive.jpg" width="500">
+<img src="res/lap_mask_6.jpg" width="500">
 
 
 ### Authors
