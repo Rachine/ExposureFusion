@@ -26,12 +26,12 @@ class LaplacianMap(object):
         """names is a liste of names, fmt is the format of the images"""
         self.images = []
         for name in names:
-            self.images.append(image.Image(fmt, name))
+            self.images.append(image.Image(fmt, name, crop=True, n=n))
         self.shape = self.images[0].shape
         self.num_images = len(self.images)
         self.height_pyr = n
-        
-    def get_weights_map(self, w_c = 1, w_s = 1, w_e = 1):
+
+    def get_weights_map(self, w_c, w_s, w_e):
         """Return the normalized Weight map"""
         self.weights = []
         sums = np.zeros((self.shape[0], self.shape[1]))
@@ -46,7 +46,7 @@ class LaplacianMap(object):
             self.weights[index] = self.weights[index]/sums
         return self.weights
 
-    def get_gaussian_pyramid(self,image, n=3):
+    def get_gaussian_pyramid(self,image, n):
         """Return the Gaussian Pyramid of an image"""
         gaussian_pyramid_floors = [image]
         for floor in range(1,n):
@@ -60,7 +60,7 @@ class LaplacianMap(object):
             self.weights_pyramid.append(self.get_gaussian_pyramid(self.weights[index],self.height_pyr))
         return self.weights_pyramid
     
-    def get_laplacian_pyramid(self,image, n=3):
+    def get_laplacian_pyramid(self,image, n):
         """Return the Laplacian Pyramid of an image"""
         gaussian_pyramid_floors = self.get_gaussian_pyramid(image,n)
         laplacian_pyramid_floors = [gaussian_pyramid_floors[-1]]
@@ -76,10 +76,10 @@ class LaplacianMap(object):
             self.laplacian_pyramid.append(self.get_laplacian_pyramid(self.images[index].array,self.height_pyr))
         return self.laplacian_pyramid
     
-    def result_exposure(self):
+    def result_exposure(self,  w_c = 1, w_s = 1, w_e = 1):
         "Return the Exposure Fusion image with Laplacian/Gaussian Fusion method"
         print "weights"
-        self.get_weights_map(1,1,1)
+        self.get_weights_map(w_c, w_s, w_e)
         print "gaussian pyramid"
         self.get_gaussian_pyramid_weights()
         print "laplacian pyramid"
@@ -92,7 +92,6 @@ class LaplacianMap(object):
                 print 'image ', index
                 for canal in range(3):
                     result_floor[:,:,canal] += self.laplacian_pyramid[index][floor][:,:,canal]*self.weights_pyramid[index][floor]
-                # result_floor += self.laplacian_pyramid[index][floor] * self.weights_pyramid[index][floor]
             result_pyramid.append(result_floor)
         # Get the image from the Laplacian pyramid
         self.result_image = result_pyramid[-1]
@@ -105,9 +104,7 @@ class LaplacianMap(object):
 
     
 if __name__ == "__main__":
-    names = [line.rstrip('\n') for line in open('list_jpeg_mask.txt')]
-    lap = LaplacianMap('jpeg',names,n=5)
-    res = lap.result_exposure()
+    names = [line.rstrip('\n') for line in open('list_jpeg_test.txt')]
+    lap = LaplacianMap('mountain',names,n=6)
+    res = lap.result_exposure(1,1,1)
     image.show(res)
-    import scipy.misc
-#    scipy.misc.toimage(res, cmin=0.0, cmax=1).save('result_jpeg_exposure_grandcanal.png')

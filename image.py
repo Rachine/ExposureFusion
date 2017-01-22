@@ -28,14 +28,21 @@ def show_gray(gray_array):
 class Image(object):
     """Class for Image"""
 
-    def __init__(self, fmt, path):
+    def __init__(self, fmt, path, crop=False, n=0):
         self.path = os.path.join("image_set", fmt, str(path))
         self.fmt = fmt
         self.array = misc.imread(self.path)
-#        self.array = misc.imresize(self.array, 0.2)
         self.array = self.array.astype(np.float32) / 255
-#        self.array = self.array[10:522,10:842]
+        if crop:
+            self.crop_image(n)
         self.shape = self.array.shape
+
+    def crop_image(self, n):
+        resolution = 2**n
+        (height, width, _) = self.array.shape
+        (max_height, max_width) = (resolution*(height//resolution), resolution*(width//resolution))
+        (begin_height, begin_width) = ((height-max_height)/2, (width-max_width)/2)
+        self.array = self.array[begin_height:max_height+begin_height, begin_width:max_width+begin_width]
 
     @property
     def grayScale(self):
