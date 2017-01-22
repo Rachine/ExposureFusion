@@ -51,7 +51,7 @@ class WeightsMap(object):
 
 if __name__ == "__main__":
     names = [line.rstrip('\n') for line in open('list_jpeg_test.txt')]
-    W = WeightsMap("mountain", names)
-    im = W.result_exposure(1,0,0)
+    W = WeightsMap("mask", names)
+    im = W.result_exposure(1,1,1)
     image.show(im)
-    misc.imsave("res/mountain_contr_naif.jpg", im)
+    misc.imsave("res/mask_naive.jpg", im)

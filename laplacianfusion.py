@@ -105,6 +105,7 @@ class LaplacianMap(object):
     
 if __name__ == "__main__":
     names = [line.rstrip('\n') for line in open('list_jpeg_test.txt')]
-    lap = LaplacianMap('mountain',names,n=6)
+    lap = LaplacianMap('arno',names,n=6)
     res = lap.result_exposure(1,1,1)
     image.show(res)
+    misc.imsave("res/arno_3.jpg", res)

@@ -4,20 +4,19 @@ This code implements the Exposure Fusion, a Low-Dynamic-Range technique. It blen
 
 You can find the Research paper where the algorithm comes from [here](https://github.com/Rachine/ExposureFusion/blob/master/exposure_fusion.pdf) [1]
 
-This code used OpenCV 3 and python 2.7 and the installation is based on this [Tutorial](http://www.pyimagesearch.com/2015/06/22/install-opencv-3-0-and-python-2-7-on-ubuntu/).
+This code used python 2.7 and the packages Numpy and SciPy.
 
 Here some multi-exposure sequence of photo used:
 
-<img src="/image_set/jpeg/t_0_1" width="240"> <img src="/image_set/jpeg/t_5_1" width="240"> <img src="/image_set/jpeg/t_9_1" width="240">
+<img src="/image_set/mask/mask_under.jpg" width="240"> <img src="/image_set/mask/mask_over.jpg" width="240"> <img src="/image_set/mask/mask_mean.jpg" width="240">
 
-Here the result with the Naive implemtation:
+Here the result with the Naive implementation:
 
-<img src="/result_jpeg_naive.png" width="500">
-
+<img src="res/lap_mask_6.jpg" width="500">
 
 Here the result with the Exposure Fusion algorithm with the Laplacian Pyramid:
 
-<img src="/result_jpeg_exposure.png" width="500">
+<img src="res/mask_naive.jpg" width="500">
 
 
 ### Authors
