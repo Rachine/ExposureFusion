@@ -12,16 +12,16 @@ Here some multi-exposure sequence of photo used:
 
 Here the result with the Naive implementation:
 
-<img src="/image_set/mask/mask_under.jpg" width="230"> <img src="/image_set/mask/mask_mean.jpg" width="230"> <img src="/image_set/mask/mask_over.jpg" width="230">
-
-Here the result with the Naive implementation:
-
 <img src="res/mask_naive.jpg" width="500">
 
 Here the result with the Exposure Fusion algorithm with the Laplacian Pyramid:
 
 <img src="res/lap_mask_6.jpg" width="500">
 
+### Usage
+
+To test the code with your own images, put them in a new folder under the folder _image\_set_ and edit the text file _list\_images.txt_ by putting the names of your images.
+Then run _main.py_ with the desired arguments. You can see all the possible arguments by running: `python main.py -h`
 
 ### Authors
  - Chaïmaa Kadaoui

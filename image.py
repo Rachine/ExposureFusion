@@ -6,11 +6,14 @@ import matplotlib.pyplot as plt
 from scipy import ndimage, misc
 import pdb
 
+
 def weightedAverage(pixel):
     return 0.299*pixel[0] + 0.587*pixel[1] + 0.114*pixel[2]
 
+
 def exponential_euclidean(canal, sigma):
     return np.exp(-(canal - 0.5)**2/(2*sigma**2))
+
 
 def show(color_array):
     """ Function to show image"""
@@ -18,13 +21,15 @@ def show(color_array):
     plt.show()
     plt.axis('off')
 
+
 def show_gray(gray_array):
     """ Function to show grayscale image"""
     fig = plt.figure()
     plt.imshow(gray_array, cmap=plt.cm.Greys_r)
     plt.show()
     plt.axis('off')
-    
+
+
 class Image(object):
     """Class for Image"""
 
@@ -48,7 +53,7 @@ class Image(object):
     def grayScale(self):
         """Grayscale image"""
         rgb = self.array
-        self._grayScale = np.dot(rgb[...,:3], [0.299, 0.587, 0.114])
+        self._grayScale = np.dot(rgb[..., :3], [0.299, 0.587, 0.114])
         return self._grayScale
 
     def saturation(self):
@@ -65,16 +70,16 @@ class Image(object):
         grey = self.grayScale
         contrast = np.zeros((self.shape[0], self.shape[1]))
         grey_extended = np.zeros((self.shape[0]+2, self.shape[1]+2))
-        grey_extended[1:self.shape[0]+1,1:self.shape[1]+1]=grey
-#        kernel = np.array([[ -1,-1, -1 ],
+        grey_extended[1:self.shape[0]+1, 1:self.shape[1]+1] = grey
+#        kernel = np.array([[ -1, -1, -1 ],
 #                           [ -1, 8, -1 ],
 #                            [ -1, -1, -1 ]])
-        kernel = np.array([[ 0,1, 0 ],
+        kernel = np.array([[ 0, 1, 0 ],
                            [ 1, -4, 1 ],
                             [ 0, 1, 0 ]])
         for row in range(self.shape[0]):
             for col in range(self.shape[1]):
-                contrast[row][col] = np.abs((kernel* grey_extended[row:(row+3),col:(col+3)]).sum())
+                contrast[row][col] = np.abs((kernel * grey_extended[row:(row+3), col:(col+3)]).sum())
         contrast = (contrast - np.min(contrast))
         contrast = contrast / np.max(contrast)
         return contrast
@@ -85,7 +90,7 @@ class Image(object):
         sobel_h = np.zeros((self.shape[0], self.shape[1]))
         sobel_v = np.zeros((self.shape[0], self.shape[1]))
         grey_extended = np.zeros((self.shape[0]+2, self.shape[1]+2))
-        grey_extended[1:self.shape[0]+1,1:self.shape[1]+1]=grey
+        grey_extended[1:self.shape[0]+1,1:self.shape[1]+1] = grey
         kernel1 = np.array([[ -1,-2, -1 ],
                            [ 0, 0, 0 ],
                             [ 1, 2, 1 ]])
@@ -94,8 +99,8 @@ class Image(object):
                             [ -1, 0, -1 ]])
         for row in range(self.shape[0]):
             for col in range(self.shape[1]):
-                sobel_h[row][col] = np.abs((kernel1* grey_extended[row:(row+3),col:(col+3)]).sum())
-                sobel_v[row][col] = np.abs((kernel2* grey_extended[row:(row+3),col:(col+3)]).sum())
+                sobel_h[row][col] = np.abs((kernel1 * grey_extended[row:(row+3), col:(col+3)]).sum())
+                sobel_v[row][col] = np.abs((kernel2 * grey_extended[row:(row+3), col:(col+3)]).sum())
         return sobel_h, sobel_v
         
     def exposedness(self):
@@ -110,6 +115,6 @@ class Image(object):
         return red_exp*green_exp*blue_exp
 
 if __name__ == "__main__":
-    im = Image("jpeg","grandcanal_mean.jpg")
+    im = Image("jpeg", "grandcanal_mean.jpg")
     sat = im.contrast()
     show_gray(sat)

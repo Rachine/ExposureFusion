@@ -11,7 +11,8 @@ import image
 #        c = np.true_divide( a, b )
 #        c[ ~ np.isfinite( c )] = 0 
 #        return c
-        
+
+
 class WeightsMap(object):
     """Class for weights attribution for all images"""
 
@@ -39,20 +40,20 @@ class WeightsMap(object):
             self.weights[index] = self.weights[index]/sums
         return self.weights   
     
-    def result_exposure(self, w_c = 1, w_s = 1, w_e = 1):
+    def result_exposure(self, w_c=1, w_s=1, w_e=1):
         "Return the Exposure Fusion image with Naive method"
         self.get_weights_map(w_c, w_s, w_e)
         self.result_image = np.zeros(self.shape)
         for canal in range(3):
             for index in range(self.num_images):
-                self.result_image[:,:,canal] += self.weights[index] * self.images[index].array[:,:,canal]
-        self.result_image[self.result_image<0] = 0
-        self.result_image[self.result_image>1] = 1
+                self.result_image[:, :, canal] += self.weights[index] * self.images[index].array[:, :, canal]
+        self.result_image[self.result_image < 0] = 0
+        self.result_image[self.result_image > 1] = 1
         return self.result_image
 
 if __name__ == "__main__":
     names = [line.rstrip('\n') for line in open('list_jpeg_test.txt')]
     W = WeightsMap("mask", names)
-    im = W.result_exposure(1,1,1)
+    im = W.result_exposure(1, 1, 1)
     image.show(im)
     misc.imsave("res/mask_naive.jpg", im)
