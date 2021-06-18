@@ -1,11 +1,12 @@
-# -*- coding: utf-8 -*-
+# encoding=utf-8
 
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy import ndimage, misc
+from scipy import misc
+
 import image
 
-#def div0( a, b ):
+
+# def div0( a, b ):
 #    """ ignore / 0, div0( [-1, 0, 1], 0 ) -> [0, 0, 0] """
 #    with np.errstate(divide='ignore', invalid='ignore'):
 #        c = np.true_divide( a, b )
@@ -32,14 +33,14 @@ class WeightsMap(object):
             contrast = image_name.contrast()
             saturation = image_name.saturation()
             exposedness = image_name.exposedness()
-            weight = (contrast**w_c)*(saturation**w_s)*(exposedness**w_e) + 1e-12
-#            weight = ndimage.gaussian_filter(weight, sigma=(3, 3), order=0)
+            weight = (contrast ** w_c) * (saturation ** w_s) * (exposedness ** w_e) + 1e-12
+            #            weight = ndimage.gaussian_filter(weight, sigma=(3, 3), order=0)
             self.weights.append(weight)
             sums = sums + weight
         for index in range(self.num_images):
-            self.weights[index] = self.weights[index]/sums
-        return self.weights   
-    
+            self.weights[index] = self.weights[index] / sums
+        return self.weights
+
     def result_exposure(self, w_c=1, w_s=1, w_e=1):
         "Return the Exposure Fusion image with Naive method"
         self.get_weights_map(w_c, w_s, w_e)
@@ -50,6 +51,7 @@ class WeightsMap(object):
         self.result_image[self.result_image < 0] = 0
         self.result_image[self.result_image > 1] = 1
         return self.result_image
+
 
 if __name__ == "__main__":
     names = [line.rstrip('\n') for line in open('list_jpeg_test.txt')]
